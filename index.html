@@ -1,0 +1,4168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FOODIE | Restaurants Near You</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0b0b0b;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 72px;
+            background: rgba(11, 11, 11, 0.96);
+            border-bottom: 1px solid #242424;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 5%;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: 1px;
+
+            margin-right: 35px;
+
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: #ff512f;
+        }
+
+        /* LOCATION */
+
+        .location-box {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            min-width: 115px;
+
+            cursor: pointer;
+
+            margin-right: 28px;
+        }
+
+        .location-icon {
+            color: #ff4f4f;
+            font-size: 19px;
+        }
+
+        .location-text small {
+            display: block;
+
+            color: #777;
+            font-size: 10px;
+            line-height: 12px;
+        }
+
+        .location-text strong {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .arrow {
+            color: #aaa;
+            font-size: 11px;
+        }
+
+        /* NAV SEARCH */
+
+        .nav-search {
+            height: 42px;
+            width: 435px;
+
+            display: flex;
+            align-items: center;
+
+            background: #181818;
+
+            border: 1px solid #292929;
+            border-radius: 12px;
+
+            padding: 0 15px;
+
+            transition: 0.3s;
+        }
+
+        .nav-search:focus-within {
+            border-color: #ff512f;
+            box-shadow: 0 0 0 3px rgba(255, 81, 47, 0.08);
+        }
+
+        .nav-search span {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        .nav-search input {
+            width: 100%;
+
+            background: transparent;
+            border: none;
+            outline: none;
+
+            color: white;
+            font-size: 12px;
+        }
+
+        .nav-search input::placeholder {
+            color: #666;
+        }
+
+        /* NAV RIGHT */
+
+        .nav-right {
+            margin-left: auto;
+
+            display: flex;
+            align-items: center;
+            gap: 27px;
+        }
+
+        .nav-item {
+            color: #bdbdbd;
+            font-size: 13px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .nav-item:hover {
+            color: #ff512f;
+        }
+
+        .profile-container {
+            position: relative;
+        }
+
+        .profile {
+            width: 37px;
+            height: 37px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(135deg, #ff512f, #f09819);
+
+            color: white;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .cart-icon {
+            position: relative;
+
+            font-size: 21px;
+
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+
+            top: -8px;
+            right: -10px;
+
+            width: 17px;
+            height: 17px;
+
+            border-radius: 50%;
+
+            background: #ff512f;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        /* PROFILE MENU */
+
+        .profile-menu {
+            display: none;
+
+            position: absolute;
+
+            right: 0;
+            top: 50px;
+
+            width: 230px;
+
+            background: #171717;
+
+            border: 1px solid #303030;
+            border-radius: 15px;
+
+            padding: 10px;
+
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .profile-menu.active {
+            display: block;
+        }
+
+        .profile-header {
+            padding: 13px;
+
+            border-bottom: 1px solid #292929;
+
+            margin-bottom: 7px;
+        }
+
+        .profile-header strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .profile-header span {
+            color: #777;
+            font-size: 11px;
+        }
+
+        .profile-option {
+            padding: 11px 13px;
+
+            border-radius: 9px;
+
+            color: #ccc;
+
+            font-size: 12px;
+
+            transition: 0.2s;
+        }
+
+        .profile-option:hover {
+            background: #242424;
+            color: white;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            width: 86%;
+            max-width: 1400px;
+
+            margin: auto;
+        }
+
+        /* GREETING */
+
+        .greeting {
+            padding-top: 45px;
+        }
+
+        .greeting h1 {
+            font-size: 29px;
+            font-weight: 700;
+        }
+
+        .greeting h1 span {
+            color: #ff512f;
+        }
+
+        .greeting p {
+            margin-top: 7px;
+
+            color: #777;
+
+            font-size: 13px;
+        }
+
+        /* MAIN SEARCH */
+
+        .main-search {
+            height: 54px;
+
+            margin-top: 27px;
+
+            display: flex;
+            align-items: center;
+
+            background: #171717;
+
+            border: 1px solid #292929;
+            border-radius: 15px;
+
+            padding: 0 20px;
+
+            transition: 0.3s;
+        }
+
+        .main-search:focus-within {
+            border-color: #ff512f;
+            box-shadow: 0 0 25px rgba(255,81,47,0.06);
+        }
+
+        .main-search span {
+            font-size: 20px;
+            margin-right: 13px;
+        }
+
+        .main-search input {
+            width: 100%;
+
+            background: transparent;
+
+            border: none;
+            outline: none;
+
+            color: white;
+
+            font-size: 13px;
+        }
+
+        .main-search input::placeholder {
+            color: #666;
+        }
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section {
+            margin-top: 55px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+
+            margin-bottom: 20px;
+        }
+
+        .heading-left h2 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .heading-left p {
+            margin-top: 5px;
+
+            color: #666;
+
+            font-size: 11px;
+        }
+
+        .view-all {
+            color: #ff512f;
+
+            font-size: 11px;
+
+            cursor: pointer;
+        }
+
+        /* =========================
+           CATEGORIES
+        ========================= */
+
+        .category-grid {
+            display: grid;
+
+            grid-template-columns: repeat(9, 1fr);
+
+            gap: 13px;
+        }
+
+        .category {
+            height: 100px;
+
+            background: #171717;
+
+            border: 1px solid #282828;
+
+            border-radius: 15px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .category:hover,
+        .category.active {
+            border-color: #ff512f;
+
+            background: linear-gradient(
+                145deg,
+                #21110d,
+                #171717
+            );
+
+            transform: translateY(-3px);
+        }
+
+        .category .emoji {
+            font-size: 27px;
+        }
+
+        .category span:last-child {
+            color: #ccc;
+
+            font-size: 11px;
+        }
+
+        /* =========================
+           OFFER CARDS
+        ========================= */
+
+        .offer-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .offer-card {
+            min-height: 150px;
+
+            border: 1px solid #30251f;
+
+            border-radius: 18px;
+
+            padding: 24px;
+
+            position: relative;
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(255,81,47,0.16),
+                    transparent 35%
+                ),
+                #171313;
+        }
+
+        .offer-card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 130px;
+            height: 130px;
+
+            border-radius: 50%;
+
+            background: rgba(255,81,47,0.06);
+
+            right: -50px;
+            bottom: -60px;
+        }
+
+        .offer-label {
+            color: #ff512f;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+        }
+
+        .offer-card h3 {
+            margin-top: 9px;
+
+            font-size: 21px;
+        }
+
+        .offer-card p {
+            margin-top: 5px;
+
+            color: #888;
+
+            font-size: 11px;
+        }
+
+        .offer-code {
+            display: inline-block;
+
+            margin-top: 13px;
+
+            padding: 6px 10px;
+
+            border: 1px dashed #555;
+
+            border-radius: 7px;
+
+            color: #ccc;
+
+            font-size: 9px;
+        }
+
+        /* =========================
+           RESTAURANT GRID
+        ========================= */
+
+        .restaurant-grid {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 18px;
+        }
+
+        .restaurant-card {
+            background: #171717;
+
+            border: 1px solid #292929;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            position: relative;
+
+            transition: 0.28s;
+
+            cursor: pointer;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+
+            border-color: #444;
+
+            box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+        }
+
+        .restaurant-image {
+            height: 190px;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .restaurant-image img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: 0.5s;
+        }
+
+        .restaurant-card:hover .restaurant-image img {
+            transform: scale(1.05);
+        }
+
+        .favorite {
+            position: absolute;
+
+            top: 12px;
+            right: 12px;
+
+            width: 34px;
+            height: 34px;
+
+            border-radius: 50%;
+
+            border: none;
+
+            background: rgba(0,0,0,0.65);
+
+            color: white;
+
+            font-size: 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            z-index: 2;
+        }
+
+        .favorite.active {
+            color: #ff512f;
+        }
+
+        .offer-tag {
+            position: absolute;
+
+            left: 0;
+            bottom: 0;
+
+            padding: 7px 11px;
+
+            border-radius: 0 8px 0 0;
+
+            background: #ff512f;
+
+            color: white;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+        .rating {
+            position: absolute;
+
+            right: 12px;
+            bottom: 11px;
+
+            padding: 5px 8px;
+
+            background: white;
+
+            color: #222;
+
+            border-radius: 7px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        .restaurant-info {
+            padding: 16px;
+        }
+
+        .restaurant-info h3 {
+            font-size: 15px;
+
+            font-weight: 600;
+        }
+
+        .cuisine {
+            margin-top: 4px;
+
+            color: #777;
+
+            font-size: 10px;
+        }
+
+        .restaurant-meta {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 13px;
+        }
+
+        .delivery {
+            color: #ff512f;
+
+            font-size: 10px;
+
+            font-weight: 600;
+        }
+
+        .price {
+            color: #aaa;
+
+            font-size: 10px;
+        }
+
+        .restaurant-location {
+            margin-top: 9px;
+
+            color: #666;
+
+            font-size: 9px;
+        }
+
+        .status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            margin-top: 10px;
+
+            color: #75c982;
+
+            font-size: 9px;
+        }
+
+        .status::before {
+            content: "";
+
+            width: 6px;
+            height: 6px;
+
+            background: #54c96b;
+
+            border-radius: 50%;
+        }
+
+        /* =========================
+           CUISINE CARDS
+        ========================= */
+
+        .cuisine-grid {
+            display: grid;
+
+            grid-template-columns: repeat(8, 1fr);
+
+            gap: 14px;
+        }
+
+        .cuisine-card {
+            height: 130px;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            position: relative;
+
+            cursor: pointer;
+        }
+
+        .cuisine-card img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: 0.4s;
+        }
+
+        .cuisine-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .cuisine-card::after {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background: linear-gradient(
+                transparent 30%,
+                rgba(0,0,0,0.85)
+            );
+        }
+
+        .cuisine-name {
+            position: absolute;
+
+            left: 12px;
+            bottom: 12px;
+
+            z-index: 2;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+        /* =========================
+           FAST DELIVERY
+        ========================= */
+
+        .fast-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .fast-card {
+            background: #171717;
+
+            border: 1px solid #292929;
+
+            border-radius: 17px;
+
+            padding: 27px;
+        }
+
+        .fast-icon {
+            font-size: 26px;
+        }
+
+        .fast-card h3 {
+            margin-top: 17px;
+
+            font-size: 16px;
+        }
+
+        .fast-card p {
+            margin-top: 6px;
+
+            color: #777;
+
+            font-size: 10px;
+        }
+
+        /* =========================
+           FILTERS
+        ========================= */
+
+        .filters {
+            display: flex;
+
+            gap: 9px;
+
+            margin-bottom: 20px;
+
+            flex-wrap: wrap;
+        }
+
+        .filter {
+            padding: 8px 15px;
+
+            border-radius: 20px;
+
+            background: #111;
+
+            border: 1px solid #303030;
+
+            color: #aaa;
+
+            font-size: 10px;
+
+            transition: 0.2s;
+        }
+
+        .filter:hover,
+        .filter.active {
+            color: white;
+
+            border-color: #ff512f;
+
+            background: #1e120f;
+        }
+
+        /* =========================
+           LOAD MORE
+        ========================= */
+
+        .load-more-container {
+            text-align: center;
+
+            margin-top: 30px;
+        }
+
+        .load-more {
+            padding: 11px 28px;
+
+            border-radius: 9px;
+
+            border: 1px solid #393939;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 10px;
+        }
+
+        .load-more:hover {
+            border-color: #ff512f;
+            color: #ff512f;
+        }
+
+        /* =========================
+           CART DRAWER
+        ========================= */
+
+        .overlay {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0,0,0,0.7);
+
+            z-index: 1500;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .cart-drawer {
+            position: fixed;
+
+            top: 0;
+            right: -430px;
+
+            width: 410px;
+            height: 100vh;
+
+            background: #151515;
+
+            border-left: 1px solid #303030;
+
+            z-index: 1600;
+
+            padding: 25px;
+
+            transition: 0.35s;
+
+            box-shadow: -20px 0 60px rgba(0,0,0,0.4);
+        }
+
+        .cart-drawer.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            padding-bottom: 20px;
+
+            border-bottom: 1px solid #292929;
+        }
+
+        .cart-header h2 {
+            font-size: 20px;
+        }
+
+        .close-cart {
+            width: 32px;
+            height: 32px;
+
+            border-radius: 50%;
+
+            border: 1px solid #333;
+
+            background: #222;
+
+            color: white;
+        }
+
+        .cart-empty {
+            text-align: center;
+
+            padding-top: 100px;
+
+            color: #777;
+        }
+
+        .cart-empty-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .cart-empty h3 {
+            color: white;
+
+            font-size: 16px;
+        }
+
+        .cart-empty p {
+            margin-top: 5px;
+
+            font-size: 11px;
+        }
+
+        /* =========================
+           LOCATION MODAL
+        ========================= */
+
+        .location-modal {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0,0,0,0.72);
+
+            z-index: 1700;
+
+            align-items: center;
+            justify-content: center;
+        }
+
+        .location-modal.active {
+            display: flex;
+        }
+
+        .location-content {
+            width: 440px;
+
+            background: #181818;
+
+            border: 1px solid #333;
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+        }
+
+        .location-content h2 {
+            font-size: 19px;
+        }
+
+        .location-content > p {
+            color: #777;
+
+            font-size: 10px;
+
+            margin-top: 5px;
+        }
+
+        .location-search {
+            margin-top: 20px;
+
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+
+            background: #111;
+
+            border: 1px solid #333;
+
+            border-radius: 10px;
+
+            padding: 0 13px;
+        }
+
+        .location-search input {
+            width: 100%;
+
+            margin-left: 9px;
+
+            background: transparent;
+
+            border: none;
+            outline: none;
+
+            color: white;
+
+            font-size: 11px;
+        }
+
+        .current-location {
+            margin-top: 13px;
+
+            padding: 14px;
+
+            border: 1px solid rgba(255,81,47,0.3);
+
+            border-radius: 11px;
+
+            color: #ff512f;
+
+            font-size: 11px;
+
+            cursor: pointer;
+        }
+
+        .saved-address {
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 14px;
+
+            margin-top: 9px;
+
+            background: #111;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+        }
+
+        .saved-address:hover {
+            background: #202020;
+        }
+
+        .address-icon {
+            font-size: 20px;
+        }
+
+        .address-info strong {
+            display: block;
+
+            font-size: 11px;
+        }
+
+        .address-info span {
+            display: block;
+
+            color: #777;
+
+            font-size: 9px;
+
+            margin-top: 3px;
+        }
+
+        .add-address {
+            margin-top: 12px;
+
+            padding: 13px;
+
+            text-align: center;
+
+            border: 1px dashed #444;
+
+            border-radius: 10px;
+
+            color: #bbb;
+
+            font-size: 10px;
+
+            cursor: pointer;
+        }
+
+        .close-location {
+            width: 100%;
+
+            margin-top: 17px;
+
+            padding: 11px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #292929;
+
+            color: white;
+
+            font-size: 10px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            margin-top: 90px;
+
+            padding: 35px 0;
+
+            border-top: 1px solid #222;
+
+            color: #555;
+
+            font-size: 10px;
+        }
+
+        .footer-inner {
+            width: 86%;
+            max-width: 1400px;
+
+            margin: auto;
+
+            display: flex;
+
+            justify-content: space-between;
+        }
+
+        .footer-logo {
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+        }
+
+        .footer-logo span {
+            color: #ff512f;
+        }
+
+        /* =========================
+           NO RESULTS
+        ========================= */
+
+        .no-results {
+            display: none;
+
+            text-align: center;
+
+            padding: 50px;
+
+            color: #666;
+
+            grid-column: 1 / -1;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1200px) {
+
+            .restaurant-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .cuisine-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .nav-search {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                padding: 0 3%;
+            }
+
+            .location-box {
+                display: none;
+            }
+
+            .nav-search {
+                width: 300px;
+            }
+
+            .nav-item {
+                display: none;
+            }
+
+            .restaurant-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .offer-grid,
+            .fast-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: 65px;
+            }
+
+            .logo {
+                font-size: 22px;
+
+                margin-right: 15px;
+            }
+
+            .nav-search {
+                width: 100%;
+                height: 38px;
+            }
+
+            .nav-right {
+                gap: 12px;
+            }
+
+            .profile {
+                width: 33px;
+                height: 33px;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .greeting {
+                padding-top: 30px;
+            }
+
+            .greeting h1 {
+                font-size: 23px;
+            }
+
+            .restaurant-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .cuisine-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .location-content {
+                width: 90%;
+            }
+
+            .cart-drawer {
+                width: 100%;
+                right: -100%;
+            }
+
+            .footer-inner {
+                width: 92%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        FOOD<span>IE</span>
+    </div>
+
+
+    <!-- LOCATION -->
+
+    <div class="location-box" onclick="openLocation()">
+
+        <div class="location-icon">
+            📍
+        </div>
+
+        <div class="location-text">
+
+            <small>Deliver to</small>
+
+            <strong id="navLocation">
+                Home
+            </strong>
+
+        </div>
+
+        <div class="arrow">
+            ▾
+        </div>
+
+    </div>
+
+
+    <!-- NAV SEARCH -->
+
+    <div class="nav-search">
+
+        <span>🔍</span>
+
+        <input
+            type="text"
+            id="navSearch"
+            placeholder="Search restaurants or dishes..."
+            oninput="searchRestaurants(this.value)"
+        >
+
+    </div>
+
+
+    <!-- NAV RIGHT -->
+
+    <div class="nav-right">
+
+        <div class="nav-item">
+            🎁 Offers
+        </div>
+
+        <div class="nav-item">
+            ❓ Help
+        </div>
+
+
+        <!-- PROFILE -->
+
+        <div class="profile-container">
+
+            <div
+                class="profile"
+                onclick="toggleProfile()"
+            >
+                A
+            </div>
+
+
+            <div
+                class="profile-menu"
+                id="profileMenu"
+            >
+
+                <div class="profile-header">
+
+                    <strong>
+                        Anusha
+                    </strong>
+
+                    <span>
+                        anusha@example.com
+                    </span>
+
+                </div>
+
+                <div class="profile-option">
+                    👤 My Profile
+                </div>
+
+                <div class="profile-option">
+                    📦 My Orders
+                </div>
+
+                <div class="profile-option">
+                    ❤️ Favourites
+                </div>
+
+                <div class="profile-option">
+                    📍 Manage Addresses
+                </div>
+
+                <div class="profile-option">
+                    ⚙️ Settings
+                </div>
+
+                <div class="profile-option">
+                    🚪 Logout
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CART -->
+
+        <div
+            class="cart-icon"
+            onclick="openCart()"
+        >
+
+            🛒
+
+            <div
+                class="cart-count"
+                id="cartCount"
+            >
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="container">
+
+
+    <!-- GREETING -->
+
+    <section class="greeting">
+
+        <h1>
+            Hi <span>Anusha</span> 👋
+        </h1>
+
+        <p>
+            Discover something delicious near you.
+        </p>
+
+
+        <!-- MAIN SEARCH -->
+
+        <div class="main-search">
+
+            <span>🔍</span>
+
+            <input
+                type="text"
+                id="mainSearch"
+                placeholder="What's on your mind? Search for food, restaurants or cuisines..."
+                oninput="searchRestaurants(this.value)"
+            >
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         WHAT'S ON YOUR MIND
+    ================================================= -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="heading-left">
+
+                <h2>
+                    What's on your mind?
+                </h2>
+
+                <p>
+                    Explore your favourite food
+                </p>
+
+            </div>
+
+            <div class="view-all">
+                View all →
+            </div>
+
+        </div>
+
+
+        <div class="category-grid">
+
+            <div
+                class="category active"
+                onclick="filterCategory('all', this)"
+            >
+
+                <span class="emoji">🍽️</span>
+                <span>All</span>
+
+            </div>
+
+            <div
+                class="category"
+                onclick="filterCategory('Pizza', this)"
+            >
+
+                <span class="emoji">🍕</span>
+                <span>Pizza</span>
+
+            </div>
+
+            <div
+                class="category"
+                onclick="filterCategory('Burger', this)"
+            >
+
+                <span class="emoji">🍔</span>
+                <span>Burgers</span>
+
+            </div>
+
+            <div
+                class="category"
+                onclick="filterCategory('Biryani', this)"
+            >
+
+                <span class="emoji">🍛</span>
+                <span>Biryani</span>
+
+            </div>
+
+            <div
+                class="category"
+                onclick="filterCategory('Chinese', this)"
+            >
+
+                <span class="emoji">🍜</span>
+                <span>Chinese</span>
+
+            </div>
+
+            <div
+                class="category"
+                onclick="filterCategory('Chicken', this)"
+            >
+
+                <span class="emoji">🍗</span>
+                <span>Chicken</span>
+
+            </div>
+
+            <div
+                class="category"
+                onclick="filterCategory('South Indian', this)"
+            >
+
+                <span class="emoji">🥘</span>
+                <span>South Indian</span>
+
+            </div>
+
+            <div
+                class="category"
+                onclick="filterCategory('Desserts', this)"
+            >
+
+                <span class="emoji">🍰</span>
+                <span>Desserts</span>
+
+            </div>
+
+            <div
+                class="category"
+                onclick="filterCategory('Healthy', this)"
+            >
+
+                <span class="emoji">🥗</span>
+                <span>Healthy</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         OFFERS
+    ================================================= -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="heading-left">
+
+                <h2>
+                    🔥 Offers for you
+                </h2>
+
+                <p>
+                    Save more on your favourite meals
+                </p>
+
+            </div>
+
+            <div class="view-all">
+                View all →
+            </div>
+
+        </div>
+
+
+        <div class="offer-grid">
+
+            <div class="offer-card">
+
+                <div class="offer-label">
+                    FIRST ORDER
+                </div>
+
+                <h3>
+                    50% OFF
+                </h3>
+
+                <p>
+                    Get 50% off on your first FOODIE order
+                </p>
+
+                <span class="offer-code">
+                    FOODIE50
+                </span>
+
+            </div>
+
+
+            <div class="offer-card">
+
+                <div class="offer-label">
+                    DELIVERY DEAL
+                </div>
+
+                <h3>
+                    FREE DELIVERY
+                </h3>
+
+                <p>
+                    On selected restaurants near you
+                </p>
+
+                <span class="offer-code">
+                    NO CODE REQUIRED
+                </span>
+
+            </div>
+
+
+            <div class="offer-card">
+
+                <div class="offer-label">
+                    WEEKEND SPECIAL
+                </div>
+
+                <h3>
+                    ₹125 OFF
+                </h3>
+
+                <p>
+                    Order above ₹499 and save more
+                </p>
+
+                <span class="offer-code">
+                    FOODIE125
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         TOP RESTAURANTS
+    ================================================= -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="heading-left">
+
+                <h2>
+                    🏆 Top restaurants in Bengaluru
+                </h2>
+
+                <p>
+                    Highly rated restaurants near your location
+                </p>
+
+            </div>
+
+            <div class="view-all">
+                See all →
+            </div>
+
+        </div>
+
+
+        <div class="restaurant-grid">
+
+            <!-- RESTAURANT 1 -->
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=900&q=80"
+                        alt="Spice Junction"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="rating">
+                        ⭐ 4.6
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Spice Junction
+                    </h3>
+
+                    <div class="cuisine">
+                        Indian • Biryani
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 30 min
+                        </span>
+
+                        <span class="price">
+                            ₹299 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 2.4 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESTAURANT 2 -->
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=900&q=80"
+                        alt="Pizza Milano"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        20% OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.7
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Pizza Milano
+                    </h3>
+
+                    <div class="cuisine">
+                        Italian • Pizza
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 28 min
+                        </span>
+
+                        <span class="price">
+                            ₹449 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 3.1 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESTAURANT 3 -->
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=80"
+                        alt="Wok and Bowl"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="rating">
+                        ⭐ 4.5
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Wok & Bowl
+                    </h3>
+
+                    <div class="cuisine">
+                        Chinese • Asian
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 30 min
+                        </span>
+
+                        <span class="price">
+                            ₹379 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 1.8 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESTAURANT 4 -->
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80"
+                        alt="Tandoori Flames"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        30% OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.4
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Tandoori Flames
+                    </h3>
+
+                    <div class="cuisine">
+                        North Indian • Tandoor
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 35 min
+                        </span>
+
+                        <span class="price">
+                            ₹399 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 4.2 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         RESTAURANTS WITH OFFERS
+    ================================================= -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="heading-left">
+
+                <h2>
+                    🎁 Restaurants with great offers
+                </h2>
+
+                <p>
+                    Delicious food with a little extra saving
+                </p>
+
+            </div>
+
+            <div class="view-all">
+                See all →
+            </div>
+
+        </div>
+
+
+        <div class="restaurant-grid">
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80"
+                        alt="Burger House"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        50% OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.5
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Burger House
+                    </h3>
+
+                    <div class="cuisine">
+                        Burgers • Fast Food
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 25 min
+                        </span>
+
+                        <span class="price">
+                            ₹349 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 1.2 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=900&q=80"
+                        alt="Royal Biryani"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        ₹125 OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.7
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Royal Biryani
+                    </h3>
+
+                    <div class="cuisine">
+                        Biryani • Indian
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 29 min
+                        </span>
+
+                        <span class="price">
+                            ₹329 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 2.8 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80"
+                        alt="Green Bowl"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        25% OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.6
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Green Bowl
+                    </h3>
+
+                    <div class="cuisine">
+                        Healthy • Vegetarian
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 24 min
+                        </span>
+
+                        <span class="price">
+                            ₹299 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 2.0 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1630383249896-424e482df921?auto=format&fit=crop&w=900&q=80"
+                        alt="Dosa Corner"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        FREE DELIVERY
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.5
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Dosa Corner
+                    </h3>
+
+                    <div class="cuisine">
+                        South Indian
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 22 min
+                        </span>
+
+                        <span class="price">
+                            ₹249 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 1.5 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ONLINE DELIVERY
+    ================================================= -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="heading-left">
+
+                <h2>
+                    🚴 Restaurants with online food delivery
+                </h2>
+
+                <p>
+                    Restaurants delivering to your location
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="filters">
+
+            <button
+                class="filter active"
+                onclick="setFilter(this)"
+            >
+                All
+            </button>
+
+            <button
+                class="filter"
+                onclick="setFilter(this)"
+            >
+                ⚡ Under 30 min
+            </button>
+
+            <button
+                class="filter"
+                onclick="setFilter(this)"
+            >
+                ⭐ Rating
+            </button>
+
+            <button
+                class="filter"
+                onclick="setFilter(this)"
+            >
+                🎁 Offers
+            </button>
+
+            <button
+                class="filter"
+                onclick="setFilter(this)"
+            >
+                ₹ Price
+            </button>
+
+        </div>
+
+
+        <div class="restaurant-grid">
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=900&q=80"
+                        alt="Spice Junction"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="rating">
+                        ⭐ 4.6
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>Spice Junction</h3>
+
+                    <div class="cuisine">
+                        Indian • Biryani
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 30 min
+                        </span>
+
+                        <span class="price">
+                            ₹299 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 2.4 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=900&q=80"
+                        alt="Pizza Milano"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        20% OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.7
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>Pizza Milano</h3>
+
+                    <div class="cuisine">
+                        Italian • Pizza
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 28 min
+                        </span>
+
+                        <span class="price">
+                            ₹449 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 3.1 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=80"
+                        alt="Wok and Bowl"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="rating">
+                        ⭐ 4.5
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>Wok & Bowl</h3>
+
+                    <div class="cuisine">
+                        Chinese • Asian
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 30 min
+                        </span>
+
+                        <span class="price">
+                            ₹379 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 1.8 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80"
+                        alt="Tandoori Flames"
+                    >
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        30% OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.4
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>Tandoori Flames</h3>
+
+                    <div class="cuisine">
+                        North Indian • Tandoor
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 35 min
+                        </span>
+
+                        <span class="price">
+                            ₹399 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 4.2 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         BEST CUISINES
+    ================================================= -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="heading-left">
+
+                <h2>
+                    🍜 Best cuisines near you
+                </h2>
+
+                <p>
+                    Explore food by cuisine
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="cuisine-grid">
+
+            <div class="cuisine-card">
+
+                <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=600&q=80">
+
+                <div class="cuisine-name">
+                    Biryani
+                </div>
+
+            </div>
+
+
+            <div class="cuisine-card">
+
+                <img src="https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=600&q=80">
+
+                <div class="cuisine-name">
+                    Pizza
+                </div>
+
+            </div>
+
+
+            <div class="cuisine-card">
+
+                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80">
+
+                <div class="cuisine-name">
+                    Chinese
+                </div>
+
+            </div>
+
+
+            <div class="cuisine-card">
+
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80">
+
+                <div class="cuisine-name">
+                    Burgers
+                </div>
+
+            </div>
+
+
+            <div class="cuisine-card">
+
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80">
+
+                <div class="cuisine-name">
+                    Indian
+                </div>
+
+            </div>
+
+
+            <div class="cuisine-card">
+
+                <img src="https://images.unsplash.com/photo-1630383249896-424e482df921?auto=format&fit=crop&w=600&q=80">
+
+                <div class="cuisine-name">
+                    South Indian
+                </div>
+
+            </div>
+
+
+            <div class="cuisine-card">
+
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80">
+
+                <div class="cuisine-name">
+                    Healthy
+                </div>
+
+            </div>
+
+
+            <div class="cuisine-card">
+
+                <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=600&q=80">
+
+                <div class="cuisine-name">
+                    Desserts
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         FASTEST DELIVERY
+    ================================================= -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="heading-left">
+
+                <h2>
+                    ⚡ Fastest delivery near you
+                </h2>
+
+                <p>
+                    When you're hungry, waiting isn't an option
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="fast-grid">
+
+            <div class="fast-card">
+
+                <div class="fast-icon">
+                    ⚡
+                </div>
+
+                <h3>
+                    Under 20 minutes
+                </h3>
+
+                <p>
+                    Get your food delivered super fast.
+                </p>
+
+            </div>
+
+
+            <div class="fast-card">
+
+                <div class="fast-icon">
+                    🚴
+                </div>
+
+                <h3>
+                    Under 30 minutes
+                </h3>
+
+                <p>
+                    Quick restaurants around your location.
+                </p>
+
+            </div>
+
+
+            <div class="fast-card">
+
+                <div class="fast-icon">
+                    🛵
+                </div>
+
+                <h3>
+                    Under 40 minutes
+                </h3>
+
+                <p>
+                    More choices with reliable delivery.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         EXPLORE EVERY RESTAURANT
+    ================================================= -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="heading-left">
+
+                <h2>
+                    📍 Explore every restaurant near you
+                </h2>
+
+                <p>
+                    Find your next favourite place to eat
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="filters">
+
+            <button
+                class="filter active"
+                onclick="setFilter(this)"
+            >
+                All
+            </button>
+
+            <button
+                class="filter"
+                onclick="setFilter(this)"
+            >
+                ⭐ 4.0+
+            </button>
+
+            <button
+                class="filter"
+                onclick="setFilter(this)"
+            >
+                ⚡ Fast Delivery
+            </button>
+
+            <button
+                class="filter"
+                onclick="setFilter(this)"
+            >
+                🎁 Offers
+            </button>
+
+            <button
+                class="filter"
+                onclick="setFilter(this)"
+            >
+                ₹ Budget
+            </button>
+
+            <button
+                class="filter"
+                onclick="setFilter(this)"
+            >
+                🍕 Cuisine
+            </button>
+
+        </div>
+
+
+        <div class="restaurant-grid" id="restaurantGrid">
+
+
+            <!-- CARD 1 -->
+
+            <div
+                class="restaurant-card searchable"
+                data-name="Spice Junction"
+                data-cuisine="Indian Biryani"
+            >
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=900&q=80">
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="rating">
+                        ⭐ 4.6
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Spice Junction
+                    </h3>
+
+                    <div class="cuisine">
+                        Indian • Biryani
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 30 min
+                        </span>
+
+                        <span class="price">
+                            ₹299 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 2.4 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD 2 -->
+
+            <div
+                class="restaurant-card searchable"
+                data-name="Pizza Milano"
+                data-cuisine="Italian Pizza"
+            >
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=900&q=80">
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        20% OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.7
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Pizza Milano
+                    </h3>
+
+                    <div class="cuisine">
+                        Italian • Pizza
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 28 min
+                        </span>
+
+                        <span class="price">
+                            ₹449 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 3.1 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD 3 -->
+
+            <div
+                class="restaurant-card searchable"
+                data-name="Burger House"
+                data-cuisine="Burger Fast Food"
+            >
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80">
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        50% OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.5
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Burger House
+                    </h3>
+
+                    <div class="cuisine">
+                        Burgers • Fast Food
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 25 min
+                        </span>
+
+                        <span class="price">
+                            ₹349 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 1.2 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD 4 -->
+
+            <div
+                class="restaurant-card searchable"
+                data-name="Royal Biryani"
+                data-cuisine="Biryani Indian"
+            >
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=900&q=80">
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        ₹125 OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.7
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Royal Biryani
+                    </h3>
+
+                    <div class="cuisine">
+                        Biryani • Indian
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 29 min
+                        </span>
+
+                        <span class="price">
+                            ₹329 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 2.8 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD 5 -->
+
+            <div
+                class="restaurant-card searchable"
+                data-name="Green Bowl"
+                data-cuisine="Healthy Vegetarian"
+            >
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80">
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        25% OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.6
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Green Bowl
+                    </h3>
+
+                    <div class="cuisine">
+                        Healthy • Vegetarian
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 24 min
+                        </span>
+
+                        <span class="price">
+                            ₹299 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 2.0 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD 6 -->
+
+            <div
+                class="restaurant-card searchable"
+                data-name="Dosa Corner"
+                data-cuisine="South Indian Dosa"
+            >
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1630383249896-424e482df921?auto=format&fit=crop&w=900&q=80">
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        FREE DELIVERY
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.5
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Dosa Corner
+                    </h3>
+
+                    <div class="cuisine">
+                        South Indian
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 22 min
+                        </span>
+
+                        <span class="price">
+                            ₹249 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 1.5 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD 7 -->
+
+            <div
+                class="restaurant-card searchable"
+                data-name="Tandoori Flames"
+                data-cuisine="North Indian Tandoor Chicken"
+            >
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80">
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="offer-tag">
+                        30% OFF
+                    </span>
+
+                    <span class="rating">
+                        ⭐ 4.4
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Tandoori Flames
+                    </h3>
+
+                    <div class="cuisine">
+                        North Indian • Tandoor
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 35 min
+                        </span>
+
+                        <span class="price">
+                            ₹399 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 4.2 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD 8 -->
+
+            <div
+                class="restaurant-card searchable"
+                data-name="Wok Bowl"
+                data-cuisine="Chinese Asian"
+            >
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=80">
+
+                    <button
+                        class="favorite"
+                        onclick="toggleFavorite(event,this)"
+                    >
+                        ♡
+                    </button>
+
+                    <span class="rating">
+                        ⭐ 4.5
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Wok & Bowl
+                    </h3>
+
+                    <div class="cuisine">
+                        Chinese • Asian
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 30 min
+                        </span>
+
+                        <span class="price">
+                            ₹379 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 1.8 km • Bengaluru
+                    </div>
+
+                    <div class="status">
+                        Open
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="no-results" id="noResults">
+
+                <div style="font-size:40px;">
+                    🔍
+                </div>
+
+                <h3 style="color:white;margin-top:10px;">
+                    No restaurants found
+                </h3>
+
+                <p style="margin-top:5px;">
+                    Try searching for another restaurant or cuisine.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="load-more-container">
+
+            <button class="load-more">
+                Load more restaurants
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         RECOMMENDED
+    ================================================= -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="heading-left">
+
+                <h2>
+                    ❤️ Recommended for you
+                </h2>
+
+                <p>
+                    Because you like Biryani
+                </p>
+
+            </div>
+
+            <div class="view-all">
+                See all →
+            </div>
+
+        </div>
+
+
+        <div class="restaurant-grid">
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=900&q=80">
+
+                    <span class="rating">
+                        ⭐ 4.7
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Royal Biryani
+                    </h3>
+
+                    <div class="cuisine">
+                        Biryani • Indian
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 29 min
+                        </span>
+
+                        <span class="price">
+                            ₹329 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 2.8 km • Bengaluru
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=900&q=80">
+
+                    <span class="rating">
+                        ⭐ 4.6
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Spice Junction
+                    </h3>
+
+                    <div class="cuisine">
+                        Indian • Biryani
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 30 min
+                        </span>
+
+                        <span class="price">
+                            ₹299 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 2.4 km • Bengaluru
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80">
+
+                    <span class="rating">
+                        ⭐ 4.4
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Tandoori Flames
+                    </h3>
+
+                    <div class="cuisine">
+                        North Indian • Tandoor
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 35 min
+                        </span>
+
+                        <span class="price">
+                            ₹399 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 4.2 km • Bengaluru
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card">
+
+                <div class="restaurant-image">
+
+                    <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=80">
+
+                    <span class="rating">
+                        ⭐ 4.5
+                    </span>
+
+                </div>
+
+                <div class="restaurant-info">
+
+                    <h3>
+                        Wok & Bowl
+                    </h3>
+
+                    <div class="cuisine">
+                        Chinese • Asian
+                    </div>
+
+                    <div class="restaurant-meta">
+
+                        <span class="delivery">
+                            ⏱ 30 min
+                        </span>
+
+                        <span class="price">
+                            ₹379 for two
+                        </span>
+
+                    </div>
+
+                    <div class="restaurant-location">
+                        📍 1.8 km • Bengaluru
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="footer-inner">
+
+        <div>
+            © 2026
+            <span class="footer-logo">
+                FOOD<span>IE</span>
+            </span>
+        </div>
+
+        <div>
+            Discover food. Discover your favourites.
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     OVERLAY
+===================================================== -->
+
+<div
+    class="overlay"
+    id="overlay"
+    onclick="closeCart()"
+></div>
+
+
+
+<!-- =====================================================
+     CART DRAWER
+===================================================== -->
+
+<div
+    class="cart-drawer"
+    id="cartDrawer"
+>
+
+    <div class="cart-header">
+
+        <h2>
+            Your Cart
+        </h2>
+
+        <button
+            class="close-cart"
+            onclick="closeCart()"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div class="cart-empty">
+
+        <div class="cart-empty-icon">
+            🛒
+        </div>
+
+        <h3>
+            Your cart is empty
+        </h3>
+
+        <p>
+            Add delicious food from restaurants near you.
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     LOCATION MODAL
+===================================================== -->
+
+<div
+    class="location-modal"
+    id="locationModal"
+>
+
+    <div class="location-content">
+
+        <h2>
+            📍 Choose your delivery location
+        </h2>
+
+        <p>
+            Select where you want your food delivered.
+        </p>
+
+
+        <div class="location-search">
+
+            🔍
+
+            <input
+                type="text"
+                placeholder="Search for area, street or city"
+            >
+
+        </div>
+
+
+        <div
+            class="current-location"
+            onclick="useCurrentLocation()"
+        >
+
+            ◎
+            Use current location
+
+        </div>
+
+
+        <div
+            class="saved-address"
+            onclick="selectAddress('Home')"
+        >
+
+            <div class="address-icon">
+                🏠
+            </div>
+
+            <div class="address-info">
+
+                <strong>
+                    Home
+                </strong>
+
+                <span>
+                    Saved home address
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="saved-address"
+            onclick="selectAddress('Work')"
+        >
+
+            <div class="address-icon">
+                💼
+            </div>
+
+            <div class="address-info">
+
+                <strong>
+                    Work
+                </strong>
+
+                <span>
+                    Saved work address
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="add-address">
+
+            + Add new address
+
+        </div>
+
+
+        <button
+            class="close-location"
+            onclick="closeLocation()"
+        >
+            Cancel
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+    /* =====================================================
+       PROFILE
+    ===================================================== */
+
+    function toggleProfile() {
+
+        const menu =
+            document.getElementById("profileMenu");
+
+        menu.classList.toggle("active");
+
+    }
+
+
+    document.addEventListener("click", function(event) {
+
+        const profileContainer =
+            document.querySelector(".profile-container");
+
+        const menu =
+            document.getElementById("profileMenu");
+
+        if (
+            !profileContainer.contains(event.target)
+        ) {
+
+            menu.classList.remove("active");
+
+        }
+
+    });
+
+
+
+    /* =====================================================
+       CART
+    ===================================================== */
+
+    function openCart() {
+
+        document
+            .getElementById("cartDrawer")
+            .classList.add("active");
+
+        document
+            .getElementById("overlay")
+            .classList.add("active");
+
+    }
+
+
+    function closeCart() {
+
+        document
+            .getElementById("cartDrawer")
+            .classList.remove("active");
+
+        document
+            .getElementById("overlay")
+            .classList.remove("active");
+
+    }
+
+
+
+    /* =====================================================
+       LOCATION
+    ===================================================== */
+
+    function openLocation() {
+
+        document
+            .getElementById("locationModal")
+            .classList.add("active");
+
+    }
+
+
+    function closeLocation() {
+
+        document
+            .getElementById("locationModal")
+            .classList.remove("active");
+
+    }
+
+
+    function selectAddress(address) {
+
+        document
+            .getElementById("navLocation")
+            .textContent = address;
+
+        closeLocation();
+
+    }
+
+
+    function useCurrentLocation() {
+
+        if (!navigator.geolocation) {
+
+            alert(
+                "Your browser does not support location."
+            );
+
+            return;
+
+        }
+
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+
+                document
+                    .getElementById("navLocation")
+                    .textContent = "Current location";
+
+                closeLocation();
+
+                alert(
+                    "Current location selected successfully."
+                );
+
+            },
+
+            function() {
+
+                alert(
+                    "Unable to access your location. Please select an address manually."
+                );
+
+            }
+
+        );
+
+    }
+
+
+
+    /* =====================================================
+       FAVOURITES
+    ===================================================== */
+
+    function toggleFavorite(event, button) {
+
+        event.stopPropagation();
+
+        button.classList.toggle("active");
+
+        if (
+            button.classList.contains("active")
+        ) {
+
+            button.innerHTML = "♥";
+
+        } else {
+
+            button.innerHTML = "♡";
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       CATEGORY FILTER
+    ===================================================== */
+
+    function filterCategory(category, element) {
+
+        const categories =
+            document.querySelectorAll(".category");
+
+        categories.forEach(function(item) {
+
+            item.classList.remove("active");
+
+        });
+
+        element.classList.add("active");
+
+
+        const cards =
+            document.querySelectorAll(".searchable");
+
+        let found = 0;
+
+
+        cards.forEach(function(card) {
+
+            const cuisine =
+                card.dataset.cuisine.toLowerCase();
+
+            const name =
+                card.dataset.name.toLowerCase();
+
+
+            if (
+                category === "all" ||
+                cuisine.includes(category.toLowerCase()) ||
+                name.includes(category.toLowerCase())
+            ) {
+
+                card.style.display = "block";
+
+                found++;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        document
+            .getElementById("noResults")
+            .style.display =
+            found === 0
+                ? "block"
+                : "none";
+
+    }
+
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    function searchRestaurants(value) {
+
+        value =
+            value
+                .toLowerCase()
+                .trim();
+
+
+        const cards =
+            document.querySelectorAll(".searchable");
+
+        let found = 0;
+
+
+        cards.forEach(function(card) {
+
+            const name =
+                card.dataset.name.toLowerCase();
+
+            const cuisine =
+                card.dataset.cuisine.toLowerCase();
+
+
+            if (
+                name.includes(value) ||
+                cuisine.includes(value)
+            ) {
+
+                card.style.display = "block";
+
+                found++;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        document
+            .getElementById("noResults")
+            .style.display =
+            found === 0
+                ? "block"
+                : "none";
+
+    }
+
+
+
+    /* =====================================================
+       FILTER BUTTONS
+    ===================================================== */
+
+    function setFilter(button) {
+
+        const filters =
+            button.parentElement
+            .querySelectorAll(".filter");
+
+
+        filters.forEach(function(item) {
+
+            item.classList.remove("active");
+
+        });
+
+
+        button.classList.add("active");
+
+    }
+
+
+
+</script>
+
+</body>
+</html>
